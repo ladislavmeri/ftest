@@ -41,7 +41,7 @@ program prog_ftest
     ! extra printing the number of successful and failed tests - just to check
     call printTestNumbers()
 
-    ! terminating on a filed assert
+    ! terminating on a failed assert
     call assertTrue("false test", 0>1, __FILE__, __LINE__)
 
 contains
