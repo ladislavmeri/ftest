@@ -11,7 +11,7 @@ module mod_ftest
   public:: getTestFailureNum
   public:: getTestSuccessNum
   
-!private module globals
+  !private module globals
   integer:: failureNum = 0
   integer:: successNum = 0
 
@@ -49,8 +49,9 @@ contains
     logical,          intent(in)           :: condition
     character(len=*), intent(in), optional :: srcFileName
     integer,          intent(in), optional :: lineNum 
+    logical, parameter :: isAssert = .true.
     
-    call printTestStart(testName, srcFileName, lineNum)
+    call printTestStart(testName, srcFileName, lineNum, isAssert)
 
     if ( condition ) then
       call printTestSuccess()
@@ -59,7 +60,7 @@ contains
       call printTestFailure()
       failureNum = failureNum + 1
       call printTestNumbers()
-      stop
+      stop "ASSERT FAILED"
     endif 
   end subroutine assertTrue
 !--------------------------------------------------------------------------------------------------!  
@@ -117,23 +118,38 @@ contains
 !privates
 
 !--------------------------------------------------------------------------------------------------!  
-  subroutine printTestStart(testName, srcFileName, lineNum)
+  subroutine printTestStart(testName, srcFileName, lineNum, isAssert)
     character(len=*), intent(in), optional :: testName
     character(len=*), intent(in), optional :: srcFileName
     integer,          intent(in), optional :: lineNum 
+    logical,          intent(in), optional :: isAssert 
+
 #ifdef __WINDOWS__    
     call set_ansi
 #endif
-    write(*,"(A)",advance="no") "Testing - "
+
+    if ( present(isAssert) ) then 
+      if ( isAssert ) then
+        write(*,"(A)",advance="no") "Asserting - "
+      else 
+        write(*,"(A)",advance="no") "Expecting - "
+      endif
+    else 
+      write(*,"(A)",advance="no") "Expecting - "
+    endif
+    
     if ( present(testName) ) then
       write(*,"(A)",advance="no") achar(27)//'[94m '//trim(testName)//achar(27)//'[0m'
     endif
+
     if ( present(srcFileName) ) then
       write(*,"(A)",advance="no") " in file "//trim(srcFileName)
     endif
+
     if ( present(lineNum) ) then
       write(*,"(A,I5)",advance="no") ", line:", lineNum
     endif
+
     write(*,"(A)",advance="no") " ... "
   end subroutine printTestStart
 !--------------------------------------------------------------------------------------------------!  
@@ -229,19 +245,19 @@ contains
 
     output_handle = GetStdHandle(STD_OUTPUT_HANDLE)
     IF (output_handle == INVALID_HANDLE_VALUE) THEN
-      !ERROR STOP 'GetStdHandle failed'
+      ERROR STOP 'GetStdHandle failed'
     END IF
 
     api_result = GetConsoleMode(output_handle, mode)
     IF (api_result == 0_BOOL) THEN
-      !ERROR STOP 'GetConsoleMode failed'
+      ERROR STOP 'GetConsoleMode failed'
     END IF
 
     api_result = SetConsoleMode(  &
         output_handle,  &
         IOR(mode, ENABLE_VIRTUAL_TERMINAL_PROCESSING) )
     IF (api_result == 0_BOOL) THEN
-      !ERROR STOP 'SetConsoleMode failed'
+      ERROR STOP 'SetConsoleMode failed'
     END IF
 
   END SUBROUTINE set_ansi
