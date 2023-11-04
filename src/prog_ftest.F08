@@ -28,8 +28,8 @@ program prog_ftest
                    & getTestFailureNum()==2 .and. &
                    & getTestSuccessNum()==3, __FILE__, __LINE__)
   
-    ! can test isolated test-cases by a logical function
-    call fTest("test01", test01)
+    ! can test isolated test-cases by a logical function - prints out also the elapsed time
+    call fTest("Test-case in a function", test01)
 
     ! can test isolated test-cases by the block ... end block Fortran feature
     isolatedTestCase : block 

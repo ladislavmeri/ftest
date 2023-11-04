@@ -14,7 +14,8 @@ module mod_ftest
   !private module globals
   integer:: failureNum = 0
   integer:: successNum = 0
-
+  integer, parameter :: time_kind = kind ( 1.0D+00 )
+  
 contains 
 
 !publics
@@ -26,20 +27,23 @@ contains
       logical function testFunc()
       end function testFunc
     end interface
+    real(kind=time_kind) :: tStart, tEnd
+    logical :: result
 
 #ifdef __WINDOWS__    
     call set_ansi
 #endif
     
-    write(*,"(A)") achar(27)//'[94m'//'Running '//trim(testName)//achar(27)//'[0m'//':'
+    write(*,*) ""
+    write(*,"(A)") achar(27)//'[94m'//trim(testName)//achar(27)//'[0m'//' - running :'
     
-    if ( testFunc() ) then
-      write(*,"(A)",advance="no") achar(27)//'[94m'//trim(testName)//achar(27)//'[0m'//' - '
-      call printTestSuccess()
-    else
-      write(*,"(A)",advance="no") achar(27)//'[94m'//trim(testName)//achar(27)//'[0m'//' - '
-      call printTestFailure()
-    endif
+    tStart = wtime()
+    result = testFunc()
+    tEnd = wtime()
+    write(*,"(A,F8.3,A)") achar(27)//'[94m'//trim(testName)//achar(27)//'[0m'//' - elapsed : ', &
+                          1000*(tEnd-tStart), "ms"
+    write(*,"(A)") achar(27)//'[94m'//trim(testName)//achar(27)//'[0m'//' - done '
+    write(*,*) ""
   end subroutine fTest
 !--------------------------------------------------------------------------------------------------!
 
@@ -143,14 +147,14 @@ contains
     endif
 
     if ( present(srcFileName) ) then
-      write(*,"(A)",advance="no") " in file "//trim(srcFileName)
+      write(*,"(A)",advance="no") " - in file "//trim(srcFileName)
     endif
 
     if ( present(lineNum) ) then
       write(*,"(A,I5)",advance="no") ", line:", lineNum
     endif
 
-    write(*,"(A)",advance="no") " ... "
+    write(*,"(A)") " ... "
   end subroutine printTestStart
 !--------------------------------------------------------------------------------------------------!  
   
@@ -263,5 +267,57 @@ contains
   END SUBROUTINE set_ansi
 !--------------------------------------------------------------------------------------------------!
 #endif
+
+!--------------------------------------------------------------------------------------------------!
+! Source : https://people.sc.fsu.edu/~jburkardt/f_src/wtime/wtime.f90
+!--------------------------------------------------------------------------------------------------!
+function wtime ( )
+
+  !*****************************************************************************80
+  !
+  !! WTIME returns a reading of the wall clock time.
+  !
+  !  Discussion:
+  !
+  !    To get the elapsed wall clock time, call WTIME before and after a given
+  !    operation, and subtract the first reading from the second.
+  !
+  !    This function is meant to suggest the similar routines:
+  !
+  !      "omp_get_wtime ( )" in OpenMP,
+  !      "MPI_Wtime ( )" in MPI,
+  !      and "tic" and "toc" in MATLAB.
+  !
+  !  Licensing:
+  !
+  !    This code is distributed under the GNU LGPL license. 
+  !
+  !  Modified:
+  !
+  !    27 April 2009
+  !
+  !  Author:
+  !
+  !    John Burkardt
+  !
+  !  Parameters:
+  !
+  !    Output, real ( kind = rk ) WTIME, the wall clock reading, in seconds.
+  !
+    implicit none
+  
+    
+    integer clock_max
+    integer clock_rate
+    integer clock_reading
+    real ( kind = time_kind ) wtime
+  
+    call system_clock ( clock_reading, clock_rate, clock_max )
+  
+    wtime = real ( clock_reading, kind = time_kind ) &
+          / real ( clock_rate, kind = time_kind )
+  
+    return
+  end function wtime
 
 end module mod_ftest
