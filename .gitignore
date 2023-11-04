@@ -1,0 +1,27 @@
+#ignore IDE files and folders
+.cproject
+.project
+.ptp-sync
+.settings
+*/.ptp-sync-folder
+*/*/.ptp-sync-folder
+*/*/*/.ptp-sync-folder
+.vscode
+
+#ignore all binaries, but track directories
+obj/*
+!obj/.gitkeep
+lib/*
+!lib/.gitkeep
+bin/*
+!bin/.gitkeep
+
+#ignore output files
+out/*
+!out/.gitkeep
+data/*
+!data/.gitkeep
+tmp/*
+!tmp/.gitkeep
+
+
