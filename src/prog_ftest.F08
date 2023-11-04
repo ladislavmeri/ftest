@@ -47,9 +47,16 @@ program prog_ftest
 contains
   
     logical function test01() 
-      integer :: a = 10
+      integer, parameter :: size = 1000000
+      integer :: a
+      real :: s(size)
+      do a=1, size
+        s(a) = sin(real(a))
+      end do  
       call assertTrue("Isolated test of a local variable in a logical function", &
-                      a <= 10, __FILE__, __LINE__)
+                      a == size+1, __FILE__, __LINE__)
+      call assertTrue("Second isolated test of a local variable in a logical function", &
+                      sum(s) < size, __FILE__, __LINE__)
       test01 = .true.
     end function test01
     

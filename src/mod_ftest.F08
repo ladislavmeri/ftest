@@ -35,13 +35,13 @@ contains
 #endif
     
     write(*,*) ""
-    write(*,"(A)") achar(27)//'[94m'//trim(testName)//achar(27)//'[0m'//' - running :'
+    write(*,"(A)") achar(27)//'[94m'//trim(testName)//achar(27)//'[0m'//' - running ...'
     
     tStart = wtime()
     result = testFunc()
     tEnd = wtime()
-    write(*,"(A,F8.3,A)") achar(27)//'[94m'//trim(testName)//achar(27)//'[0m'//' - elapsed : ', &
-                          1000*(tEnd-tStart), "ms"
+    write(*,"(A,F10.3,A)") achar(27)//'[94m'//trim(testName)//achar(27)//'[0m'//' - duration : ', &
+                          1000*(tEnd-tStart), " ms"
     write(*,"(A)") achar(27)//'[94m'//trim(testName)//achar(27)//'[0m'//' - done '
     write(*,*) ""
   end subroutine fTest

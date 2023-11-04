@@ -12,7 +12,7 @@ FC = gfortran
 ##############################################################
 #it is possible to edit the compiler flags but not recommended
 ##############################################################
-FC_FLAGS += -std=f2008 -cpp -Wall -Wextra -pedantic -O2 #-g -pg
+FC_FLAGS += -std=f2008 -cpp -Wall -Wextra -pedantic -O0 #-g -pg
 
 ##############################################################
 #edit external include & library localtions & usage
