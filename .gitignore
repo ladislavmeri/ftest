@@ -11,8 +11,8 @@
 #ignore all binaries, but track directories
 obj/*
 !obj/.gitkeep
-mod/*
-!mod/.gitkeep
+#mod/*
+#!mod/.gitkeep
 lib/*
 !lib/.gitkeep
 bin/*
