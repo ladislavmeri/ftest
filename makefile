@@ -1,21 +1,22 @@
 # makefile
-# build for the flib_ftest package
+# build for the ftest package
 # L. Meri
 ###############################################################################
 
 ##############################################################
-#please edit the PROJ_DIR and FC variables according your system
+# edit the PROJ_DIR and FC variables if needed
 ##############################################################
 PROJ_DIR = $(shell pwd)
 FC = gfortran
 
 ##############################################################
-#it is possible to edit the compiler flags but not recommended
+# it is possible to edit the compiler flags but not recommended
 ##############################################################
 FC_FLAGS += -std=f2008 -cpp -Wall -Wextra -pedantic -O0 #-g -pg
 
 ##############################################################
-#edit external include & library localtions & usage
+# edit INSTALL_PREFIX or EXT_LIB_DIR and EXT_INC_DIR 
+# to change the instalation destinations
 ##############################################################
 
 SRC_DIR = $(PROJ_DIR)/src
