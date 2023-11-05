@@ -49,7 +49,9 @@ contains
     logical function test01() 
       integer, parameter :: size = 1000000
       integer :: a
-      real :: s(size)
+      real, allocatable :: s(:)
+
+      allocate( s(size) )
       do a=1, size
         s(a) = sin(real(a))
       end do  
