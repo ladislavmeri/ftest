@@ -56,15 +56,15 @@ test : $(TARGET_LIB) $(TARGET_BINS)
 ftest : $(TARGET_PROG_01)
 	time $(TARGET_PROG_01)
 	
-$(TARGET_PROG_01) : $(SRC_DIR)/prog_ftest.F08 \
+$(TARGET_PROG_01) : $(SRC_DIR)/prog_ftest.F90 \
                     $(TARGET_LIB) 
-	$(FC) $(FC_FLAGS) $(INC_FLAGS) -o $@ $(SRC_DIR)/prog_ftest.F08 $(LIB_FLAGS)
+	$(FC) $(FC_FLAGS) $(INC_FLAGS) -o $@ $(SRC_DIR)/prog_ftest.F90 $(LIB_FLAGS)
 	
 $(TARGET_LIB) : $(OBJ_LIST) 
 	$(AR) $(ARFLAGS) $@ $(OBJ_LIST) 
 
-$(OBJ_DIR)/mod_ftest.o : $(SRC_DIR)/mod_ftest.F08  
-	$(FC) $(FC_FLAGS) $(INC_FLAGS) -c -o $@ $(SRC_DIR)/mod_ftest.F08
+$(OBJ_DIR)/mod_ftest.o : $(SRC_DIR)/mod_ftest.F90  
+	$(FC) $(FC_FLAGS) $(INC_FLAGS) -c -o $@ $(SRC_DIR)/mod_ftest.F90
 	
 	
 	
