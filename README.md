@@ -1,5 +1,5 @@
 # ftest
-Very minimalistic Fortran testing
+Very minimalistic Fortran unit testing
 
 ## Build & Test
 
